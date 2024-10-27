@@ -14,10 +14,5 @@ public abstract class Person {
     public abstract String getSearchKey();
 
     public abstract String lineRepresentation();
-
-    @Override
-    public String toString() {
-        return id + ',' + name + ',' + email + ',' + phoneNumber;
-    }
 }
 
