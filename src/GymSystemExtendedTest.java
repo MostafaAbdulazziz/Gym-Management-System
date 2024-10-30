@@ -33,7 +33,7 @@ public class GymSystemExtendedTest {
         // Do not Forget to Clear File
         double mark = 0;
         try {
-            AdminRole admin = new AdminRole("Trainer.txt");
+            AdminRole admin = new AdminRole();
             // Adding Trainer Test
             admin.addTrainer("T001", "David", "david@fitlife.com", "Yoga", "0123456789");
             if (admin.getListOfTrainers().size() == 1) {
@@ -187,7 +187,7 @@ public class GymSystemExtendedTest {
             // Test Invalid Cancellation (after 3 days)
             LocalDate oldDate = LocalDate.now().minusDays(5);
             registered = trainer.registerMemberForClass("M002", "C002", oldDate);
-            if(registered){
+            if(!registered){
                 mark += 1;
                 System.out.println(1.3);
             }
