@@ -1,43 +1,35 @@
 import java.util.ArrayList;
 
-public class AdminRole extends Role {
+public class AdminRole {
+    private TrainerDatabase Database;
 
-    public AdminRole() {
-        super();  // Initializes the databases via the Role superclass constructor
+    AdminRole(String fileName) {
+        this.Database = new TrainerDatabase(fileName);
     }
 
-    // Admin-specific functionality to manage trainers
-    public void addTrainer(String trainerId, String name, String email, String speciality, String phoneNumber) {
-        Trainer trainer = new Trainer(trainerId, name, email, speciality, phoneNumber);
-        trainerDatabase.insertRecord(trainer);
+    public void addTrainer(String trainerId, String name, String email, String specialty, String
+            phoneNumber) {
+        Trainer newTrainer = new Trainer(trainerId, name, email, specialty, phoneNumber);
+        if (!Database.contains(newTrainer.getSearchKey())) {
+            Database.insertRecord(newTrainer);
+        } else {
+            System.out.println("Trainer already exists.");
+        }
     }
 
     public ArrayList<Trainer> getListOfTrainers() {
-        return new ArrayList<>(trainerDatabase.returnAllRecords());
+        return Database.returnAllRecords();
     }
 
-    public void removeTrainer(String trainerId) {
-        trainerDatabase.deleteRecord(trainerId);
+    public void removeTrainer(String key) {
+        Database.deleteRecord(key);
     }
 
-    // Role-specific abstract methods that AdminRole may not need; Implement empty methods
-    @Override
-    public void addMember(String memberID, String name, String membershipType, String email, String phoneNumber, String status) {
-        // AdminRole does not manage members
+    public void logout() {
+        Database.saveToFile();
+        System.out.println("All data saved. Logging out.............");
+
     }
 
-    @Override
-    public ArrayList<Member> getListOfMembers() {
-        return new ArrayList<>(); // AdminRole does not manage members, return empty list
-    }
 
-    @Override
-    public void addClass(String classID, String className, String trainerID, int duration, int maxParticipants) {
-        // AdminRole does not manage classes
-    }
-
-    @Override
-    public ArrayList<Class> getListOfClasses() {
-        return new ArrayList<>(); // AdminRole does not manage classes, return empty list
-    }
 }
