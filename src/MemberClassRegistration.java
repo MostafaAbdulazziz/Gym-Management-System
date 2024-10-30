@@ -1,5 +1,4 @@
 import java.time.LocalDate;
-import java.time.temporal.Temporal;
 
 public class MemberClassRegistration {
     private String memberId;
@@ -7,25 +6,38 @@ public class MemberClassRegistration {
     private String status;
     private LocalDate registrationDate;
 
-    public MemberClassRegistration(String memberId, String classId, String status, LocalDate registerationDate) {
+    public MemberClassRegistration(String memberId, String classId, LocalDate registrationDate, String status) {
         this.memberId = memberId;
         this.classId = classId;
         this.status = status;
-        this.registrationDate = registerationDate;
+        this.registrationDate = registrationDate;
     }
+
     public String getMemberId() {
         return memberId;
     }
+
     public String getClassId() {
         return classId;
     }
-    public Temporal getRegistrationDate() {
+
+    public LocalDate getRegistrationDate() {
         return registrationDate;
     }
+
     public String getSearchKey() {
-        return memberId + classId;
+        return memberId +"-"+ classId;
     }
+
     public String lineRepresentation() {
-        return memberId + "," + classId + "," + status + "," + registrationDate;
+        return memberId + "," + classId + "," + registrationDate + "," + status;
+    }
+
+    public String setRegistrationStatus(String status) {
+        return this.status = status;
+    }
+
+    public String getRegistrationStatus() {
+        return status;
     }
 }

@@ -13,17 +13,17 @@ public class MemberClassRegistrationDatabase extends Database<MemberClassRegistr
             System.out.println("Invalid line format: " + line);
             return null;
         }
-        return new MemberClassRegistration(data[0], data[1], data[2], LocalDate.parse(data[3]));
+        return new MemberClassRegistration(data[0], data[1], LocalDate.parse(data[2]), data[3]);
     }
 
     @Override
-    protected String getKey(MemberClassRegistration trainer) {
-        return trainer.getSearchKey();
+    protected String getKey(MemberClassRegistration registration) {
+        return registration.getSearchKey();
     }
 
     @Override
-    protected String lineRepresentation(MemberClassRegistration trainer) {
-        return trainer.lineRepresentation();
+    protected String lineRepresentation(MemberClassRegistration registration) {
+        return registration.lineRepresentation();
     }
 }
 

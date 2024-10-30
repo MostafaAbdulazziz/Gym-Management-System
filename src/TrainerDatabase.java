@@ -1,6 +1,5 @@
-import java.util.ArrayList;
-
 public class TrainerDatabase extends Database<Trainer> {
+
 
     public TrainerDatabase(String fileName) {
         super(fileName);

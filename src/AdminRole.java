@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class AdminRole extends Role {
 
+
     public AdminRole() {
         super();  // Initializes the databases via the Role superclass constructor
     }

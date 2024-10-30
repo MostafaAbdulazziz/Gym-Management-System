@@ -6,13 +6,14 @@ public class Trainer extends Person {
         this.speciality = speciality;
     }
 
-    @Override
-    public String getSearchKey() {
-        return id;
-    }
 
     @Override
     public String lineRepresentation() {
         return id + "," + name + "," + email + "," + speciality + "," + phoneNumber;
+    }
+
+    @Override
+    public String getSearchKey() {
+        return id;
     }
 }

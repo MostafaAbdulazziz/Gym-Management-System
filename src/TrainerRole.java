@@ -41,7 +41,7 @@ public class TrainerRole extends Role {
     public boolean registerMemberForClass(String memberID, String classID, LocalDate registrationDate) {
         Class classRecord = classDatabase.getRecord(classID);
         if (classRecord != null && classRecord.getAvailableSeats() > 0) {
-            MemberClassRegistration registration = new MemberClassRegistration(memberID, classID, "active", registrationDate);
+            MemberClassRegistration registration = new MemberClassRegistration(memberID, classID, registrationDate,"active");
             if (!registrationDatabase.contains(registration.getSearchKey())) {
                 registrationDatabase.insertRecord(registration);
                 classRecord.setAvailableSeats(classRecord.getAvailableSeats() - 1); // Decrease seats
@@ -55,26 +55,28 @@ public class TrainerRole extends Role {
     }
 
     public boolean cancelRegistration(String memberID, String classID) {
-        String searchKey = memberID + classID;
-        MemberClassRegistration registration = registrationDatabase.getRecord(searchKey);
-        if (registration != null && registration.getRegistrationDate() != null) {
-            long daysSinceRegistration = ChronoUnit.DAYS.between(registration.getRegistrationDate(), LocalDate.now());
-            if (daysSinceRegistration <= 3) { // Allow cancellation if within 3 days
-                registrationDatabase.deleteRecord(searchKey);
-                Class classRecord = classDatabase.getRecord(classID);
-                if (classRecord != null)
-                    classRecord.setAvailableSeats(classRecord.getAvailableSeats() + 1);
-                System.out.println("registration cancelled successfully");
+        if (registrationDatabase.contains(memberID + "-" + classID)) {
+            MemberClassRegistration registration = registrationDatabase.getRecord(memberID +"-"+ classID);
+            if (registration.getRegistrationStatus().equals("Cancelled")) {
+                System.out.println("Registration already cancelled");
+                return false;
+            }
+            if (!registration.getRegistrationDate().isBefore(LocalDate.now().minusDays(3))) {
+                registrationDatabase.getRecord(memberID + "-" + classID).setRegistrationStatus("Cancelled");
+                classDatabase.getRecord(classID).setAvailableSeats(classDatabase.getRecord(classID).getAvailableSeats() + 1);
+                System.out.println("Registration cancelled successfully");
                 return true;
-            } else
-                System.out.println("cancellation period exceeded");
-        } else
-            System.out.println("no registration found");
-        return false;
+            } else {
+                System.out.println("Registration cannot be cancelled, more than 3 days have passed");
+                return false;
+            }
+        } else {
+            System.out.println("Registration not found");
+            return false;
+        }
     }
 
     public ArrayList<MemberClassRegistration> getListOfRegistrations() {
         return registrationDatabase.returnAllRecords();
     }
 }
-

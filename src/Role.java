@@ -7,10 +7,10 @@ public abstract class Role {
     protected TrainerDatabase trainerDatabase;
 
     public Role() {
-        this.memberDatabase = new MemberDatabase("src//Members");
-        this.classDatabase = new ClassDatabase("src//Classes");
-        this.registrationDatabase = new MemberClassRegistrationDatabase("src//Registrations");
-        this.trainerDatabase = new TrainerDatabase("src//Trainers");
+        this.memberDatabase = new MemberDatabase("Members.txt");
+        this.classDatabase = new ClassDatabase("Classes.txt");
+        this.registrationDatabase = new MemberClassRegistrationDatabase("Registration.txt");
+        this.trainerDatabase = new TrainerDatabase("Trainer.txt");
     }
 
     public void logout() {

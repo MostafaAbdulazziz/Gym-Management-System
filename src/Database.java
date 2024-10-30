@@ -20,7 +20,7 @@ public abstract class Database<T> {
                     records.add(record);
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Error reading from file: " + fileName);
         }
     }
@@ -63,13 +63,13 @@ public abstract class Database<T> {
     }
 
     public void saveToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
             for (T record : records) {
                 writer.write(lineRepresentation(record));
                 writer.newLine();
             }
-        } catch (IOException e) {
-            System.out.println("error writing to file");
+        } catch (Exception e) {
+            System.out.println("error while writing to file: " + fileName);
         }
     }
 
