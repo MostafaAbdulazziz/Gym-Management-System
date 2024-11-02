@@ -1,12 +1,16 @@
+package backend;
+
 import java.util.ArrayList;
 
-public class AdminRole extends Role {
+public class AdminRole implements Role {
+    protected TrainerDatabase trainerDatabase;
 
 
     public AdminRole() {
-        super();
-    }
 
+        this.trainerDatabase = new TrainerDatabase("backend.Trainer.txt");
+
+    }
 
     public void addTrainer(String trainerId, String name, String email, String speciality, String phoneNumber) {
         Trainer trainer = new Trainer(trainerId, name, email, speciality, phoneNumber);
@@ -22,25 +26,12 @@ public class AdminRole extends Role {
     }
 
 
-    @Override
-    public void addMember(String memberID, String name, String membershipType, String email, String phoneNumber, String status) {
-        // AdminRole does not manage members
-    }
 
-    @Override
-    public ArrayList<Member> getListOfMembers() {
-        return new ArrayList<>();
-    }
 
-    @Override
-    public void addClass(String classID, String className, String trainerID, int duration, int maxParticipants) {
 
-    }
 
-    @Override
-    public ArrayList<Class> getListOfClasses() {
-        return new ArrayList<>();
-    }
+
+
     @Override
     public void logout() {
         trainerDatabase.saveToFile();

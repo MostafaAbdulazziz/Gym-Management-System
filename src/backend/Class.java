@@ -1,3 +1,5 @@
+package backend;
+
 public class Class {
     private String classId;
     private String className;
