@@ -1,3 +1,5 @@
+package backend;
+
 public class Trainer extends Person {
     private String speciality;
 

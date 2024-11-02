@@ -1,3 +1,5 @@
+package backend;
+
 public class Member extends Person {
     private String membershipType;
     private String status;

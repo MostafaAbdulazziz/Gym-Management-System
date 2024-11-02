@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+package backend;
 
 public class ClassDatabase extends Database<Class> {
 
