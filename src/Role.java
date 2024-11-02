@@ -13,13 +13,7 @@ public abstract class Role {
         this.trainerDatabase = new TrainerDatabase("Trainer.txt");
     }
 
-    public void logout() {
-        memberDatabase.saveToFile();
-        classDatabase.saveToFile();
-        registrationDatabase.saveToFile();
-        trainerDatabase.saveToFile();
-        System.out.println("All data saved. Logging out.");
-    }
+    public abstract void logout();
 
     public abstract void addMember(String memberID, String name, String membershipType, String email, String phoneNumber, String status);
     public abstract ArrayList<Member> getListOfMembers();

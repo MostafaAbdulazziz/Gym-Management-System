@@ -79,4 +79,10 @@ public class TrainerRole extends Role {
     public ArrayList<MemberClassRegistration> getListOfRegistrations() {
         return registrationDatabase.returnAllRecords();
     }
+    @Override
+    public void logout() {
+        memberDatabase.saveToFile();
+        classDatabase.saveToFile();
+        registrationDatabase.saveToFile();
+    }
 }
