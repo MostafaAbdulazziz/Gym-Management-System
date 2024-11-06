@@ -1,78 +1,82 @@
 package frontend;
 
 import constants.LoginCredentials;
-
 import javax.swing.*;
+import java.awt.*;
 
-public class AdminLoginWindow  extends JFrame implements LoginCredentials{
+public class AdminLoginWindow extends JFrame implements LoginCredentials {
     private JPanel panel1;
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private JButton loginButton;
-    private JButton cancelButton;
+    private FuturisticButton loginButton;
+    private FuturisticButton cancelButton;
+    private final ImageIcon backgroundImage = new ImageIcon("src/frontend/Admin.jpg");
 
     public AdminLoginWindow() {
-        panel1 = new JPanel();
-        panel1.setLayout(null);
-        usernameField = new JTextField();
-        usernameField.setBounds(100, 50, 200, 30);
-        passwordField = new JPasswordField();
-        passwordField.setBounds(100, 100, 200, 30);
-        loginButton = new JButton("Login");
-
- //////////////////////////////////////////////////
-        //Handle enter key press to login
-//        loginButton.addKeyListener(new KeyListener() {
-//            @Override
-//            public void keyTyped(KeyEvent e) {
-//                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-//                    loginButton.doClick();
-//                }
-//            }
-//
-//            @Override
-//            public void keyPressed(java.awt.event.KeyEvent e) {
-//            }
-//
-//            @Override
-//            public void keyReleased(java.awt.event.KeyEvent e) {
-//            }
-//        });
-/////////////////////////////////////////////////////////////////////////
-
-        loginButton.setBounds(100, 150, 100, 30);
-        cancelButton = new JButton("Cancel");
-        cancelButton.setBounds(200, 150, 100, 30);
-
-        usernameField.setVisible(true);
-        passwordField.setVisible(true);
-
-        add(panel1);
         setTitle("Admin Login");
         setSize(1300, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setVisible(true);
-        this.setResizable(false);
-        panel1.setVisible(true);
+        setResizable(false);
+
+        // Main panel with background image
+        panel1 = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                // Draw the background image, scaled to the panel size
+                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        panel1.setLayout(null);
+        panel1.setOpaque(false);
+
+        // Username label and field
+        JLabel usernameLabel = new JLabel("Username:");
+        usernameLabel.setBounds(30, 50, 70, 30);
+        usernameLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        usernameLabel.setForeground(Color.WHITE);
+
+        usernameField = new JTextField();
+        usernameField.setBounds(100, 50, 200, 30);
+
+        // Password label and field
+        JLabel passwordLabel = new JLabel("Password:");
+        passwordLabel.setBounds(30, 100, 70, 30);
+        passwordLabel.setFont(new Font("Arial", Font.BOLD, 13));
+        passwordLabel.setForeground(Color.WHITE);
+
+        passwordField = new JPasswordField();
+        passwordField.setBounds(100, 100, 200, 30);
+
+        // Login and Cancel buttons
+        loginButton = new FuturisticButton("Login");
+        loginButton.setBounds(100, 150, 100, 30);
+
+        cancelButton = new FuturisticButton("Cancel");
+        cancelButton.setBounds(220, 150, 100, 30);
+
+        // Add components to the panel
+        panel1.add(usernameLabel);
         panel1.add(usernameField);
+        panel1.add(passwordLabel);
         panel1.add(passwordField);
         panel1.add(loginButton);
         panel1.add(cancelButton);
 
+        // Add panel to the frame
+        add(panel1);
+
+        // Button actions
         loginButton.addActionListener(e -> {
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
 
             if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
-
                 new AdminRoleWindow();
                 dispose();
             } else {
-                JOptionPane.showMessageDialog(null,
-                        "Invalid username or password",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -80,7 +84,7 @@ public class AdminLoginWindow  extends JFrame implements LoginCredentials{
             dispose();
             new MainWindow();
         });
+
+        setVisible(true);
     }
-
-
 }

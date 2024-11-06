@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainWindow extends JFrame {
-    private final ImageIcon backgroundImage = new ImageIcon("src/frontend/4242.jpg");
+    private final ImageIcon backgroundImage = new ImageIcon("src/frontend/mainWall.jpg");
 
     public MainWindow() {
         super("Gym Management System");
-        setSize(1300, 700);
+        setSize(1200, 700);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
@@ -17,11 +17,11 @@ public class MainWindow extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
+                // Draw background image, scaled to panel size
                 g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
         mainPanel.setLayout(null);
-        mainPanel.setOpaque(false);
 
         // Welcome label
         JLabel buttonsLabel = new JLabel("Welcome");
@@ -29,7 +29,7 @@ public class MainWindow extends JFrame {
         buttonsLabel.setFont(new Font("Times New Roman", Font.BOLD, 18));
         buttonsLabel.setHorizontalAlignment(SwingConstants.CENTER);
         buttonsLabel.setVerticalAlignment(SwingConstants.TOP);
-        buttonsLabel.setBackground(Color.WHITE);
+        buttonsLabel.setBackground(new Color(255, 255, 255, 150)); // Slightly transparent white background
         buttonsLabel.setOpaque(true);
         mainPanel.add(buttonsLabel);
 
@@ -45,7 +45,6 @@ public class MainWindow extends JFrame {
         trainerRoleButton.setFont(new Font("Times New Roman", Font.BOLD, 18));
         trainerRoleButton.setBackground(Color.BLACK);
         trainerRoleButton.setForeground(Color.WHITE);
-        trainerRoleButton.setFocusable(true);
         trainerRoleButton.setOpaque(true);
         mainPanel.add(trainerRoleButton);
 
@@ -64,16 +63,14 @@ public class MainWindow extends JFrame {
             dispose();
         });
 
-         trainerRoleButton.addActionListener(e -> {
-             new TrainerLoginWindow();
-             dispose();
-         });
+        trainerRoleButton.addActionListener(e -> {
+            new TrainerLoginWindow();
+            dispose();
+        });
 
         // Add main panel to frame
         this.add(mainPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
-
-
 }

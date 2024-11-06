@@ -4,6 +4,7 @@ import backend.MemberClassRegistrationDatabase;
 import backend.MemberClassRegistration;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 public class ViewRegistrationsWindow extends JFrame {
     private MemberClassRegistrationDatabase registrationDatabase;
     private JTable registrationTable;
-    private JButton backButton;
+    private final ImageIcon backgroundImage = new ImageIcon("src/frontend/Role.jpg");
 
     public ViewRegistrationsWindow(MemberClassRegistrationDatabase registrationDatabase) {
         this.registrationDatabase = registrationDatabase;
@@ -23,55 +24,85 @@ public class ViewRegistrationsWindow extends JFrame {
 
         // Initialize components
         initComponents();
-        setUpButtons();
-
         setVisible(true);
     }
 
     private void initComponents() {
-        // Create a panel for the table and button
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+        // Main panel with background image
+        JPanel mainPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        mainPanel.setLayout(new BorderLayout());
 
-        // Create column names
+        // Column names for the table
         String[] columnNames = {"Member ID", "Class ID", "Registration Date"};
 
-        // Create a table model and make the table non-editable
+        // Table model
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Make table cells non-editable
+                return false; // Make all cells non-editable
             }
         };
 
-        // Populate the table model with registration data
+        // Populate table model with registration data
         ArrayList<MemberClassRegistration> registrations = registrationDatabase.returnAllRecords();
         for (MemberClassRegistration registration : registrations) {
-            tableModel.addRow(registration.lineRepresentation().split(",")); // Add a row with the registration data
-
+            tableModel.addRow(registration.lineRepresentation().split(","));
         }
 
-        // Create the table with the model
+        // Create and style the table with transparency and white font color
         registrationTable = new JTable(tableModel);
-        registrationTable.setPreferredScrollableViewportSize(new Dimension(1000, 600));
-        registrationTable.setFillsViewportHeight(true);
+        registrationTable.setOpaque(false);
+        registrationTable.setBackground(new Color(255, 255, 255, 0)); // Fully transparent background
+        registrationTable.setFont(new Font("Arial", Font.PLAIN, 14));
+        registrationTable.setRowHeight(30);
+        registrationTable.setGridColor(new Color(200, 200, 200, 100)); // Slightly transparent grid
 
-        // Add the table to a scroll pane for scrolling
+        // Header styling with transparency
+        registrationTable.getTableHeader().setOpaque(false);
+        registrationTable.getTableHeader().setBackground(new Color(60, 120, 180, 150)); // Semi-transparent blue
+        registrationTable.getTableHeader().setForeground(Color.WHITE);
+        registrationTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+
+        // Center-align text in cells and set font color to white
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        centerRenderer.setOpaque(false); // Make cell renderer transparent
+        centerRenderer.setForeground(Color.WHITE); // Set text color to white
+        for (int i = 0; i < registrationTable.getColumnCount(); i++) {
+            registrationTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        // Transparent scroll pane
         JScrollPane scrollPane = new JScrollPane(registrationTable);
-        panel.add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Create and add the "Back" button at the bottom center
-        backButton = new JButton("Back");
+        // Back button styling
+        FuturisticButton backButton = new FuturisticButton("Back");
         backButton.setPreferredSize(new Dimension(150, 50));
+        backButton.setFont(new Font("Arial", Font.BOLD, 16));
+        backButton.setBackground(new Color(60, 120, 180, 200)); // Semi-transparent blue
+        backButton.setForeground(Color.WHITE);
+        backButton.setFocusPainted(false);
+        backButton.setBorder(BorderFactory.createEmptyBorder());
+
+        // Back button panel
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false); // Transparent to show background
         buttonPanel.add(backButton);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Add the panel to the frame
-        add(panel);
-    }
+        // Add main panel to frame
+        add(mainPanel);
 
-    private void setUpButtons() {
+        // Back button action
         backButton.addActionListener(e -> {
             new TrainerRoleWindow();
             dispose();

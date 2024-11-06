@@ -3,20 +3,20 @@ package frontend;
 import backend.TrainerDatabase;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 
 public class RemoveTrainerWindow extends JFrame {
     private TrainerDatabase trainerDatabase;
-    JButton backButton;
-    JButton removeButton;
+    FuturisticButton backButton;
+    FuturisticButton removeButton;
     JTextField trainerIdField;
     JLabel trainerIdLabel;
+    private final ImageIcon backgroundImage = new ImageIcon("src/frontend/T.jpg");
 
     public RemoveTrainerWindow(TrainerDatabase trainerDatabase) {
         this.trainerDatabase = trainerDatabase;
         setTitle("Remove Trainer");
-        setSize(1300, 700);
+        setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -27,24 +27,19 @@ public class RemoveTrainerWindow extends JFrame {
     }
 
     private void setUpButtons() {
-        removeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String trainerId = trainerIdField.getText();
+        removeButton.addActionListener(e -> {
+            String trainerId = trainerIdField.getText();
 
-
-                if(trainerId.isEmpty()) {
-                    JOptionPane.showMessageDialog(RemoveTrainerWindow.this, "Please enter a Trainer ID.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                else if (trainerDatabase.contains(trainerId)) {
-                    JOptionPane.showMessageDialog(RemoveTrainerWindow.this, "Trainer removed successfully!");
-                    trainerIdField.setText(""); // Clear the field after successful removal
-                    trainerDatabase.deleteRecord(trainerId);
-                    trainerDatabase.saveToFile();
-                } else {
-                    JOptionPane.showMessageDialog(RemoveTrainerWindow.this, "Trainer with ID "+trainerIdField.getText()+" not found.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+            if (trainerId.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter a Trainer ID.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (trainerDatabase.contains(trainerId)) {
+                trainerDatabase.deleteRecord(trainerId);
+                trainerDatabase.saveToFile();
+                JOptionPane.showMessageDialog(this, "Trainer removed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                trainerIdField.setText(""); // Clear the field after successful removal
+            } else {
+                JOptionPane.showMessageDialog(this, "Trainer with ID = " + trainerId + " not found.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -55,35 +50,37 @@ public class RemoveTrainerWindow extends JFrame {
     }
 
     private void initComponents() {
-        // Create label and text field for Trainer ID input
-        trainerIdLabel = new JLabel("Trainer ID:");
-        trainerIdField = new JTextField(20);
-
-        // Create "Remove" and "Back" buttons
-        removeButton = new JButton("Remove");
-        backButton = new JButton("Back");
-
-        // Set action listeners for buttons
-
-
-        backButton.addActionListener(e -> dispose()); // Close the window on "Back" button click
-
-        // Panel to hold components
-        JPanel panel = new JPanel();
+        // Set up panel with background color
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
         panel.setLayout(null);
+        panel.setBackground(new Color(240, 248, 255)); // Light blue background
 
-        // Position components on the middle-left side
-        int startX = 50; // x-position for label and buttons
-        int startY = 150; // Starting y-position
-        int componentHeight = 30; // Height of each label, text field, and button
-        int spacing = 20; // Space between each row
+        // Label styling
+        Font labelFont = new Font("Arial", Font.BOLD, 14);
+        Color labelColor = new Color(226, 173, 37); // Steel blue color
 
-        // Set bounds for each component
-        trainerIdLabel.setBounds(startX, startY, 100, componentHeight);
-        trainerIdField.setBounds(startX + 100, startY, 200, componentHeight);
+        trainerIdLabel = new JLabel("Trainer ID:");
+        trainerIdLabel.setFont(labelFont);
+        trainerIdLabel.setForeground(labelColor);
+        trainerIdLabel.setBounds(50, 100, 100, 30);
 
-        removeButton.setBounds(startX, startY + componentHeight + spacing, 100, componentHeight);
-        backButton.setBounds(startX + 120, startY + componentHeight + spacing, 100, componentHeight);
+        // Trainer ID text field styling
+        trainerIdField = new JTextField(20);
+        trainerIdField.setBounds(130, 100, 200, 30);
+
+
+        // Remove and Back button styling
+        removeButton = new FuturisticButton("Remove");
+        styleButton(removeButton, 130, 160, 120, 35);
+
+        backButton = new FuturisticButton("Back");
+        styleButton(backButton, 260, 160, 120, 35);
 
         // Add components to the panel
         panel.add(trainerIdLabel);
@@ -93,5 +90,12 @@ public class RemoveTrainerWindow extends JFrame {
 
         // Add panel to frame
         add(panel);
+    }
+
+    private void styleButton(FuturisticButton button, int x, int y, int width, int height) {
+        button.setBounds(x, y, width, height);
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 12));
+        button.setFocusPainted(false);
     }
 }
