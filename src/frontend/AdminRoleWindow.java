@@ -17,13 +17,13 @@ public class AdminRoleWindow extends JFrame implements fileNames {
     TrainerDatabase trainerDatabase;
 
     public AdminRoleWindow() {
-        // Set up the window
+        
         setTitle("Admin Role");
         setSize(1300, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Initialize components
+        
         initComponents();
         setUpButtons();
     }
@@ -55,7 +55,7 @@ public class AdminRoleWindow extends JFrame implements fileNames {
     private void initComponents() {
         trainerDatabase = new TrainerDatabase(this.TRAINER_FILENAME);
 
-        // Create a main panel with a background image
+        
         JPanel panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -65,14 +65,14 @@ public class AdminRoleWindow extends JFrame implements fileNames {
         };
         panel.setLayout(null);
 
-        // Initialize buttons for admin actions
+        
         addTrainerButton = new FuturisticButton("Add Trainer");
         viewTrainersButton = new FuturisticButton("View Trainers");
         removeTrainerButton = new FuturisticButton("Remove Trainer");
         logoutButton = new FuturisticButton("Logout");
         backButton = new FuturisticButton("Back");
 
-        // Position buttons on the panel with specified bounds
+        
         int startX = 50;
         int startY = 150;
         int buttonSpacing = 20;
@@ -85,14 +85,14 @@ public class AdminRoleWindow extends JFrame implements fileNames {
         logoutButton.setBounds(startX, startY + 3 * (buttonHeight + buttonSpacing), buttonWidth, buttonHeight);
         backButton.setBounds(startX, startY + 4 * (buttonHeight + buttonSpacing), buttonWidth, buttonHeight);
 
-        // Add buttons to the panel
+        
         panel.add(addTrainerButton);
         panel.add(viewTrainersButton);
         panel.add(removeTrainerButton);
         panel.add(logoutButton);
         panel.add(backButton);
 
-        // Add panel to frame
+        
         add(panel, BorderLayout.CENTER);
         setVisible(true);
     }

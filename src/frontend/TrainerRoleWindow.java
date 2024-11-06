@@ -3,6 +3,7 @@ package frontend;
 import backend.ClassDatabase;
 import backend.MemberClassRegistrationDatabase;
 import backend.MemberDatabase;
+import backend.TrainerDatabase;
 import constants.fileNames;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ public class TrainerRoleWindow extends JFrame implements fileNames {
     private MemberDatabase memberDatabase;
     private ClassDatabase classDatabase;
     private MemberClassRegistrationDatabase registrationDatabase;
+    private TrainerDatabase trainerDatabase;
     private final ImageIcon backgroundImage = new ImageIcon("src/frontend/Trainer.jpg");
 
     private FuturisticButton addMemberButton;
@@ -24,16 +26,17 @@ public class TrainerRoleWindow extends JFrame implements fileNames {
     private FuturisticButton logoutButton;
 
     public TrainerRoleWindow() {
-        // Set up the window
+        
         setTitle("Trainer Role");
         setSize(1280, 853);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Initialize components
+        
         memberDatabase = new MemberDatabase(MEMBER_FILENAME);
         classDatabase = new ClassDatabase(CLASS_FILENAME);
         registrationDatabase = new MemberClassRegistrationDatabase(REGISTRATION_FILENAME);
+        trainerDatabase = new TrainerDatabase(TRAINER_FILENAME);
         initComponents();
         setUpButtons();
 
@@ -50,7 +53,7 @@ public class TrainerRoleWindow extends JFrame implements fileNames {
             dispose();
         });
         addClassButton.addActionListener(e -> {
-            new AddClassWindow(classDatabase);
+            new AddClassWindow(classDatabase,trainerDatabase);
             dispose();
         });
         viewClassesButton.addActionListener(e -> {
@@ -79,7 +82,7 @@ public class TrainerRoleWindow extends JFrame implements fileNames {
     }
 
     private void initComponents() {
-        // Main panel with background image
+        
         JPanel panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -89,7 +92,7 @@ public class TrainerRoleWindow extends JFrame implements fileNames {
         };
         panel.setLayout(null);
 
-        // Initialize buttons for trainer actions
+        
         addMemberButton = new FuturisticButton("Add Member");
         viewMembersButton = new FuturisticButton("View Members");
         addClassButton = new FuturisticButton("Add Class");
@@ -99,7 +102,7 @@ public class TrainerRoleWindow extends JFrame implements fileNames {
         viewRegistrationsButton = new FuturisticButton("View Registrations");
         logoutButton = new FuturisticButton("Logout");
 
-        // Position buttons with absolute positioning
+        
         int startX = 100;
         int startY = 100;
         int buttonWidth = 200;
@@ -115,7 +118,7 @@ public class TrainerRoleWindow extends JFrame implements fileNames {
         viewRegistrationsButton.setBounds(startX, startY + 6 * (buttonHeight + spacing), buttonWidth, buttonHeight);
         logoutButton.setBounds(startX, startY + 7 * (buttonHeight + spacing), buttonWidth, buttonHeight);
 
-        // Add buttons to the panel
+        
         panel.add(addMemberButton);
         panel.add(viewMembersButton);
         panel.add(addClassButton);
@@ -125,7 +128,7 @@ public class TrainerRoleWindow extends JFrame implements fileNames {
         panel.add(viewRegistrationsButton);
         panel.add(logoutButton);
 
-        // Add panel to frame
+        
         add(panel);
     }
 }

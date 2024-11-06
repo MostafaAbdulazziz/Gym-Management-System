@@ -6,6 +6,7 @@ import backend.MemberDatabase;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
 
 public class CancelRegistrationWindow extends JFrame {
     private FuturisticButton cancelRegistrationButton;
@@ -27,7 +28,7 @@ public class CancelRegistrationWindow extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Initialize components
+        
         initComponents();
         setUpButtons();
 
@@ -35,7 +36,7 @@ public class CancelRegistrationWindow extends JFrame {
     }
 
     private void initComponents() {
-        // Create a panel with GridBagLayout
+        
         JPanel panel = new JPanel(new GridBagLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -43,19 +44,19 @@ public class CancelRegistrationWindow extends JFrame {
                 g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Padding around panel
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); 
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10); // Margin between components
+        gbc.insets = new Insets(10, 10, 10, 10); 
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Set font for labels
-        Font labelFont = new Font("Arial", Font.BOLD, 16); // Larger, bold font
+        
+        Font labelFont = new Font("Arial", Font.BOLD, 16); 
 
-        // Member ID Label and Field
+        
         JLabel memberIdLabel = new JLabel("Member ID:");
-        memberIdLabel.setForeground(Color.WHITE); // Adjust color for visibility
-        memberIdLabel.setFont(labelFont); // Apply font to member ID label
+        memberIdLabel.setForeground(Color.WHITE); 
+        memberIdLabel.setFont(labelFont); 
         memberIdField = new JTextField(15);
 
         gbc.gridx = 0;
@@ -65,10 +66,10 @@ public class CancelRegistrationWindow extends JFrame {
         gbc.gridx = 1;
         panel.add(memberIdField, gbc);
 
-        // Class ID Label and Field
+        
         JLabel classIdLabel = new JLabel("Class ID:");
-        classIdLabel.setForeground(Color.WHITE); // Adjust color for visibility
-        classIdLabel.setFont(labelFont); // Apply font to class ID label
+        classIdLabel.setForeground(Color.WHITE); 
+        classIdLabel.setFont(labelFont); 
         classIdField = new JTextField(15);
 
         gbc.gridx = 0;
@@ -78,24 +79,24 @@ public class CancelRegistrationWindow extends JFrame {
         gbc.gridx = 1;
         panel.add(classIdField, gbc);
 
-        // Cancel Registration Button
+        
         cancelRegistrationButton = new FuturisticButton("Cancel Registration");
         cancelRegistrationButton.setPreferredSize(new Dimension(200, 40));
 
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER; // Center the button
+        gbc.anchor = GridBagConstraints.CENTER; 
         panel.add(cancelRegistrationButton, gbc);
 
-        // Back Button
+        
         backButton = new FuturisticButton("Logout");
         backButton.setPreferredSize(new Dimension(200, 40));
 
         gbc.gridy = 3;
         panel.add(backButton, gbc);
 
-        // Add the panel to the frame
+        
         add(panel);
     }
 
@@ -116,12 +117,17 @@ public class CancelRegistrationWindow extends JFrame {
                 JOptionPane.showMessageDialog(this, "Member is not registered for this class.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             } else {
+                if(registrationDatabase.getRecord(memberId + "-" + classId).getRegistrationDate().isBefore(LocalDate.now().minusDays(3))) {
+                    JOptionPane.showMessageDialog(this, "Cannot cancel Registration because it after 3 days from RegistrationDate", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 registrationDatabase.deleteRecord(memberId + "-" + classId);
                 JOptionPane.showMessageDialog(this, "The member with ID " + memberId + " has been unregistered from the class with ID " + classId + ".");
                 registrationDatabase.saveToFile();
                 classDatabase.getRecord(classId).setAvailableSeats(classDatabase.getRecord(classId).getAvailableSeats() + 1);
                 classDatabase.saveToFile();
             }
+            new TrainerRoleWindow();
             dispose();
         });
 

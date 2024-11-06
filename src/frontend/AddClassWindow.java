@@ -2,6 +2,7 @@ package frontend;
 
 import backend.Class;
 import backend.ClassDatabase;
+import backend.TrainerDatabase;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +11,9 @@ import java.awt.event.ActionListener;
 
 public class AddClassWindow extends JFrame {
     private ClassDatabase classDatabase;
+    private TrainerDatabase trainerDatabase;
 
-    // Declare text fields
+
     private JTextField classIdField;
     private JTextField classNameField;
     private JTextField trainerField;
@@ -19,27 +21,25 @@ public class AddClassWindow extends JFrame {
     private JTextField maxParticipantsField;
     private final ImageIcon backgroundImage = new ImageIcon("src/frontend/hall.jpg");
 
-    // Declare buttons
+
     private FuturisticButton addButton;
     private FuturisticButton backButton;
 
-    public AddClassWindow(ClassDatabase classDatabase) {
+    public AddClassWindow(ClassDatabase classDatabase, TrainerDatabase trainerDatabase) {
         this.classDatabase = classDatabase;
+        this.trainerDatabase = trainerDatabase;
 
-        // Set up the window
         setTitle("Add Class");
         setSize(1280, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Initialize components
         initComponents();
 
         setVisible(true);
     }
 
     private void initComponents() {
-        // Create a panel to hold the components
         JPanel panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -47,21 +47,19 @@ public class AddClassWindow extends JFrame {
                 g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
-        panel.setLayout(null); // Using null layout for custom positioning
+        panel.setLayout(null);
         Font labelFont = new Font("Arial", Font.BOLD, 14);
         Color labelColor = new Color(0, 0, 0);
-        // Set starting x and y positions for the components
-        int startX = 50; // x-position for labels
-        int textFieldX = 200; // x-position for text fields
-        int startY = 100; // starting y-position
+        int startX = 50;
+        int textFieldX = 200;
+        int startY = 100;
         int componentWidth = 200;
         int componentHeight = 30;
-        int spacing = 20; // space between components
+        int spacing = 20;
 
-        // Class ID label and field
         JLabel classIdLabel = new JLabel("Class ID:");
         classIdLabel.setBounds(startX, startY, 100, componentHeight);
-        classIdLabel.setForeground(labelColor); // Adjust color for visibility
+        classIdLabel.setForeground(labelColor);
         classIdLabel.setFont(labelFont);
         panel.add(classIdLabel);
 
@@ -69,10 +67,10 @@ public class AddClassWindow extends JFrame {
         classIdField.setBounds(textFieldX, startY, componentWidth, componentHeight);
         panel.add(classIdField);
 
-        // Class Name label and field
+
         JLabel classNameLabel = new JLabel("Class Name:");
         classNameLabel.setBounds(startX, startY + (componentHeight + spacing), 100, componentHeight);
-        classNameLabel.setForeground(labelColor); // Adjust color for visibility
+        classNameLabel.setForeground(labelColor);
         classNameLabel.setFont(labelFont);
         panel.add(classNameLabel);
 
@@ -80,10 +78,9 @@ public class AddClassWindow extends JFrame {
         classNameField.setBounds(textFieldX, startY + (componentHeight + spacing), componentWidth, componentHeight);
         panel.add(classNameField);
 
-        // Trainer label and field
         JLabel trainerLabel = new JLabel("Trainer:");
         trainerLabel.setBounds(startX, startY + 2 * (componentHeight + spacing), 100, componentHeight);
-        trainerLabel.setForeground(labelColor); // Adjust color for visibility
+        trainerLabel.setForeground(labelColor);
         trainerLabel.setFont(labelFont);
         panel.add(trainerLabel);
 
@@ -91,10 +88,9 @@ public class AddClassWindow extends JFrame {
         trainerField.setBounds(textFieldX, startY + 2 * (componentHeight + spacing), componentWidth, componentHeight);
         panel.add(trainerField);
 
-        // Duration label and field
         JLabel durationLabel = new JLabel("Duration:");
         durationLabel.setBounds(startX, startY + 3 * (componentHeight + spacing), 100, componentHeight);
-        durationLabel.setForeground(labelColor); // Adjust color for visibility
+        durationLabel.setForeground(labelColor);
         durationLabel.setFont(labelFont);
         panel.add(durationLabel);
 
@@ -102,10 +98,9 @@ public class AddClassWindow extends JFrame {
         durationField.setBounds(textFieldX, startY + 3 * (componentHeight + spacing), componentWidth, componentHeight);
         panel.add(durationField);
 
-        // Max Participants label and field
         JLabel maxParticipantsLabel = new JLabel("Max Participants:");
         maxParticipantsLabel.setBounds(startX, startY + 4 * (componentHeight + spacing), 150, componentHeight);
-        maxParticipantsLabel.setForeground(labelColor); // Adjust color for visibility
+        maxParticipantsLabel.setForeground(labelColor);
         maxParticipantsLabel.setFont(labelFont);
         panel.add(maxParticipantsLabel);
 
@@ -113,7 +108,6 @@ public class AddClassWindow extends JFrame {
         maxParticipantsField.setBounds(textFieldX, startY + 4 * (componentHeight + spacing), componentWidth, componentHeight);
         panel.add(maxParticipantsField);
 
-        // Initialize buttons
         addButton = new FuturisticButton("Add");
         addButton.setBounds(textFieldX, startY + 5 * (componentHeight + spacing), 100, 30);
         panel.add(addButton);
@@ -122,39 +116,66 @@ public class AddClassWindow extends JFrame {
         backButton.setBounds(textFieldX + 110, startY + 5 * (componentHeight + spacing), 100, 30);
         panel.add(backButton);
 
-        // ActionListener for the Add button
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Get the values from the text fields
                 String classId = classIdField.getText();
                 String className = classNameField.getText();
-                String trainer = trainerField.getText();
+                String trainerID = trainerField.getText();
                 String duration = durationField.getText();
                 String maxParticipants = maxParticipantsField.getText();
 
-                // Add the class to the database
-                if(classDatabase.contains(classId)) {
+                if (classDatabase.contains(classId)) {
                     JOptionPane.showMessageDialog(null,
-                            "Class with ID "+classId+" already exists",
+                            "Class with ID " + classId + " already exists",
                             "Error", JOptionPane.ERROR_MESSAGE);
+                } else if (!trainerDatabase.contains(trainerID)) {
+                    JOptionPane.showMessageDialog(null,
+                            "Trainer with ID " + trainerID + " does not exist",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                } else if (classId.isEmpty() || className.isEmpty() || trainerID.isEmpty() || duration.isEmpty() || maxParticipants.isEmpty()) {
+                    JOptionPane.showMessageDialog(null,
+                            "Please fill in all fields",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                } else if (!Validations.isValidClassId(classId)) {
+                    JOptionPane.showMessageDialog(null,
+                            "Invalid Class ID",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                } else if (!Validations.isValidClassName(className)) {
+                    JOptionPane.showMessageDialog(null,
+                            "Invalid Class Name",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                } else if (!Validations.isTrainerIdValid(trainerID)) {
+                    JOptionPane.showMessageDialog(null,
+                            "Invalid Trainer Name",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                } else if (!Validations.isNumberValid(duration)) {
+                    JOptionPane.showMessageDialog(null,
+                            "Invalid Duration",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                } else if (!Validations.isNumberValid(maxParticipants)) {
+                    JOptionPane.showMessageDialog(null,
+                            "Invalid Max Participants",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+
                 } else {
-                    classDatabase.insertRecord(new Class(classId, className, trainer, Integer.parseInt(duration), Integer.parseInt(maxParticipants)));
+                    classDatabase.insertRecord(new Class(classId, className, trainerID, Integer.parseInt(duration), Integer.parseInt(maxParticipants)));
                     JOptionPane.showMessageDialog(null, "Class added successfully");
                     classDatabase.saveToFile();
+                    if(JOptionPane.showConfirmDialog(null, "Do you want to add another class?", "Add Class", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
+                    {
+                        classIdField.setText("");
+                        classNameField.setText("");
+                        trainerField.setText("");
+                        durationField.setText("");
+                        maxParticipantsField.setText("");
+                    }
                 }
 
-                // Clear the text fields
-                classIdField.setText("");
-                classNameField.setText("");
-                trainerField.setText("");
-                durationField.setText("");
-                maxParticipantsField.setText("");
 
             }
         });
 
-        // ActionListener for the Back button
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -164,7 +185,6 @@ public class AddClassWindow extends JFrame {
             }
         });
 
-        // Add the panel to the frame
         add(panel);
     }
 }

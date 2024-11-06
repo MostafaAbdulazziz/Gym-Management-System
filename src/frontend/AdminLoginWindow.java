@@ -19,19 +19,19 @@ public class AdminLoginWindow extends JFrame implements LoginCredentials {
         setLocationRelativeTo(null);
         setResizable(false);
 
-        // Main panel with background image
+        
         panel1 = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                // Draw the background image, scaled to the panel size
+                
                 g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
         panel1.setLayout(null);
         panel1.setOpaque(false);
 
-        // Username label and field
+        
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setBounds(30, 50, 70, 30);
         usernameLabel.setFont(new Font("Arial", Font.BOLD, 12));
@@ -40,7 +40,7 @@ public class AdminLoginWindow extends JFrame implements LoginCredentials {
         usernameField = new JTextField();
         usernameField.setBounds(100, 50, 200, 30);
 
-        // Password label and field
+        
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setBounds(30, 100, 70, 30);
         passwordLabel.setFont(new Font("Arial", Font.BOLD, 13));
@@ -49,14 +49,14 @@ public class AdminLoginWindow extends JFrame implements LoginCredentials {
         passwordField = new JPasswordField();
         passwordField.setBounds(100, 100, 200, 30);
 
-        // Login and Cancel buttons
+        
         loginButton = new FuturisticButton("Login");
         loginButton.setBounds(100, 150, 100, 30);
 
         cancelButton = new FuturisticButton("Cancel");
         cancelButton.setBounds(220, 150, 100, 30);
 
-        // Add components to the panel
+        
         panel1.add(usernameLabel);
         panel1.add(usernameField);
         panel1.add(passwordLabel);
@@ -64,10 +64,10 @@ public class AdminLoginWindow extends JFrame implements LoginCredentials {
         panel1.add(loginButton);
         panel1.add(cancelButton);
 
-        // Add panel to the frame
+        
         add(panel1);
 
-        // Button actions
+        
         loginButton.addActionListener(e -> {
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());

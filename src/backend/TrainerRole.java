@@ -50,7 +50,7 @@ public class TrainerRole implements Role {
             MemberClassRegistration registration = new MemberClassRegistration(memberID, classID, registrationDate,"active");
             if (!registrationDatabase.contains(registration.getSearchKey())) {
                 registrationDatabase.insertRecord(registration);
-                classRecord.setAvailableSeats(classRecord.getAvailableSeats() - 1); // Decrease seats
+                classRecord.setAvailableSeats(classRecord.getAvailableSeats() - 1); 
                 System.out.println("backend.Member registered successfully.");
                 return true;
             } else

@@ -4,26 +4,26 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 
-// Custom FuturisticButton class with hover effect
+
 public class FuturisticButton extends JButton {
     private boolean hover = false;
 
     public FuturisticButton(String text) {
         super(text);
         setUI(new BasicButtonUI());
-        setPreferredSize(new Dimension(150, 40));  // Adjusted size
+        setPreferredSize(new Dimension(150, 40));  
         setFont(new Font("Arial", Font.BOLD, 16));
-        setForeground(Color.WHITE); // Set text color to white
+        setForeground(Color.WHITE); 
         setFocusPainted(false);
         setOpaque(false);
         setContentAreaFilled(false);
         setBorder(BorderFactory.createEmptyBorder());
 
-        // Hover effect
+        
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 hover = true;
-                setBorder(BorderFactory.createLineBorder(Color.CYAN, 2)); // Glowing cyan effect
+                setBorder(BorderFactory.createLineBorder(Color.CYAN, 2)); 
                 repaint();
             }
 
@@ -40,14 +40,14 @@ public class FuturisticButton extends JButton {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Button gradient (similar to the theme)
-        Color color1 = hover ? new Color(169, 134, 26, 236) : new Color(16, 18, 3);  // Lighter on hover
-        Color color2 = hover ? new Color(230, 183, 69, 255) : new Color(46, 48, 10, 255);  // Light cyan glow
+        
+        Color color1 = hover ? new Color(169, 134, 26, 236) : new Color(16, 18, 3);  
+        Color color2 = hover ? new Color(230, 183, 69, 255) : new Color(46, 48, 10, 255);  
 
         GradientPaint gp = new GradientPaint(0, 0, color1, 0, getHeight(), color2);
         g2d.setPaint(gp);
 
-        // Draw an oval (rounded button)
+        
         g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 50, 50);
 
         super.paintComponent(g);
@@ -58,7 +58,7 @@ public class FuturisticButton extends JButton {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Draw rounded border
+        
         g2d.setColor(new Color(0, 128, 255));
         g2d.setStroke(new BasicStroke(2));
         g2d.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 50, 50);

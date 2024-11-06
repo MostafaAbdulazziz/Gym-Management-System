@@ -16,7 +16,7 @@ public class RegisterMemberWindow extends JFrame {
     private MemberDatabase memberDatabase;
     private MemberClassRegistrationDatabase memberClassRegistrationDatabase;
 
-    // Declare the text fields and labels
+    
     private JTextField memberIdField;
     private JTextField classIdField;
     private JTextField registrationDateField;
@@ -29,13 +29,13 @@ public class RegisterMemberWindow extends JFrame {
         this.memberDatabase = memberDatabase;
         this.memberClassRegistrationDatabase = memberClassRegistrationDatabase;
 
-        // Set up the window
+        
         setTitle("Register Member");
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Initialize components
+        
         initComponents();
         setUpButtons();
 
@@ -43,7 +43,7 @@ public class RegisterMemberWindow extends JFrame {
     }
 
     private void initComponents() {
-        // Create a panel with padding and GridBagLayout for consistent alignment
+        
         JPanel panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -52,14 +52,14 @@ public class RegisterMemberWindow extends JFrame {
             }
         };
         panel.setLayout(new GridBagLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Padding around the panel
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); 
         Font labelFont = new Font("Arial", Font.BOLD, 14);
         Color labelColor = new Color(234, 234, 243);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10); // Spacing between components
+        gbc.insets = new Insets(10, 10, 10, 10); 
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Member ID Label and Field
+        
         JLabel memberIdLabel = new JLabel("Member ID:");
         memberIdLabel.setForeground(Color.WHITE);
         memberIdLabel.setFont(labelFont);
@@ -72,7 +72,7 @@ public class RegisterMemberWindow extends JFrame {
         gbc.gridx = 1;
         panel.add(memberIdField, gbc);
 
-        // Class ID Label and Field
+        
         JLabel classIdLabel = new JLabel("Class ID:");
         classIdLabel.setForeground(Color.WHITE);
         classIdLabel.setFont(labelFont);
@@ -85,14 +85,14 @@ public class RegisterMemberWindow extends JFrame {
         gbc.gridx = 1;
         panel.add(classIdField, gbc);
 
-        // Registration Date Label and Field
+        
         JLabel registrationDateLabel = new JLabel("Registration Date:");
-        registrationDateLabel.setForeground(labelColor); // Adjust color for visibility
+        registrationDateLabel.setForeground(labelColor); 
         registrationDateLabel.setFont(labelFont);
         today = LocalDate.now();
         String formattedDate = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         registrationDateField = new JTextField(formattedDate);
-        registrationDateField.setEditable(true); // Allow user to edit the date
+        registrationDateField.setEditable(true); 
 
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -101,7 +101,7 @@ public class RegisterMemberWindow extends JFrame {
         gbc.gridx = 1;
         panel.add(registrationDateField, gbc);
 
-        // Register and Back Buttons with equal size
+        
         registerButton = new FuturisticButton("Register");
         backButton = new FuturisticButton("Back");
 
@@ -116,7 +116,7 @@ public class RegisterMemberWindow extends JFrame {
         gbc.gridx = 1;
         panel.add(backButton, gbc);
 
-        // Add the panel to the frame
+        
         add(panel);
     }
 
@@ -135,7 +135,7 @@ public class RegisterMemberWindow extends JFrame {
             } else if (classDatabase.getRecord(classId).getAvailableSeats() == 0) {
                 JOptionPane.showMessageDialog(this, "No Available Seats!", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                // Parse and use the entered registration date
+                
                 LocalDate date = LocalDate.parse(registrationDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 memberClassRegistrationDatabase.insertRecord(new MemberClassRegistration(memberId, classId, date, "Active"));
                 JOptionPane.showMessageDialog(this, "Member with ID = " + memberId + " registered for class with ID = " + classId + " successfully.");

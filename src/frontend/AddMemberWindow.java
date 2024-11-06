@@ -10,7 +10,6 @@ public class AddMemberWindow extends JFrame {
     private MemberDatabase memberDatabase;
     private final ImageIcon backgroundImage = new ImageIcon("src/frontend/Member.jpg");
 
-    // Declare text fields as private members
     private JTextField nameField;
     private JTextField idField;
     private JTextField emailField;
@@ -22,13 +21,13 @@ public class AddMemberWindow extends JFrame {
 
     public AddMemberWindow(MemberDatabase memberDatabase) {
         this.memberDatabase = memberDatabase;
-        // Set up the window
+        
         setTitle("Add Member");
         setSize(1200, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Initialize components
+        
         initComponents();
         setUpButtons();
 
@@ -36,7 +35,7 @@ public class AddMemberWindow extends JFrame {
     }
 
     private void initComponents() {
-        // Main panel with background image
+        
         JPanel panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -44,9 +43,9 @@ public class AddMemberWindow extends JFrame {
                 g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
-        panel.setLayout(null); // Using null layout for custom positioning
+        panel.setLayout(null); 
 
-        // Set starting x and y positions for the components
+        
         int startX = 50;
         int textFieldX = 200;
         int startY = 150;
@@ -54,17 +53,17 @@ public class AddMemberWindow extends JFrame {
         int componentHeight = 30;
         int spacing = 20;
 
-        // Name label and field
+        
         JLabel nameLabel = new JLabel("Name:");
         nameLabel.setBounds(startX, startY, 100, componentHeight);
-        nameLabel.setForeground(Color.WHITE); // Adjust color for visibility
+        nameLabel.setForeground(Color.WHITE); 
         panel.add(nameLabel);
 
         nameField = new JTextField();
         nameField.setBounds(textFieldX, startY, componentWidth, componentHeight);
         panel.add(nameField);
 
-        // ID label and field
+        
         JLabel idLabel = new JLabel("ID:");
         idLabel.setBounds(startX, startY + (componentHeight + spacing), 100, componentHeight);
         idLabel.setForeground(Color.WHITE);
@@ -74,7 +73,7 @@ public class AddMemberWindow extends JFrame {
         idField.setBounds(textFieldX, startY + (componentHeight + spacing), componentWidth, componentHeight);
         panel.add(idField);
 
-        // Email label and field
+        
         JLabel emailLabel = new JLabel("Email:");
         emailLabel.setBounds(startX, startY + 2 * (componentHeight + spacing), 100, componentHeight);
         emailLabel.setForeground(Color.WHITE);
@@ -84,7 +83,7 @@ public class AddMemberWindow extends JFrame {
         emailField.setBounds(textFieldX, startY + 2 * (componentHeight + spacing), componentWidth, componentHeight);
         panel.add(emailField);
 
-        // Membership Type label and field
+        
         JLabel membershipTypeLabel = new JLabel("Membership Type:");
         membershipTypeLabel.setBounds(startX, startY + 3 * (componentHeight + spacing), 150, componentHeight);
         membershipTypeLabel.setForeground(Color.WHITE);
@@ -94,7 +93,7 @@ public class AddMemberWindow extends JFrame {
         membershipTypeField.setBounds(textFieldX, startY + 3 * (componentHeight + spacing), componentWidth, componentHeight);
         panel.add(membershipTypeField);
 
-        // Phone Number label and field
+        
         JLabel phoneNumberLabel = new JLabel("Phone Number:");
         phoneNumberLabel.setBounds(startX, startY + 4 * (componentHeight + spacing), 100, componentHeight);
         phoneNumberLabel.setForeground(Color.WHITE);
@@ -104,7 +103,7 @@ public class AddMemberWindow extends JFrame {
         phoneNumberField.setBounds(textFieldX, startY + 4 * (componentHeight + spacing), componentWidth, componentHeight);
         panel.add(phoneNumberField);
 
-        // Status label and field
+        
         JLabel statusLabel = new JLabel("Status:");
         statusLabel.setBounds(startX, startY + 5 * (componentHeight + spacing), 100, componentHeight);
         statusLabel.setForeground(Color.WHITE);
@@ -114,17 +113,17 @@ public class AddMemberWindow extends JFrame {
         statusField.setBounds(textFieldX, startY + 5 * (componentHeight + spacing), componentWidth, componentHeight);
         panel.add(statusField);
 
-        // Add button
+        
         addButton = new FuturisticButton("Add");
         addButton.setBounds(startX, startY + 6 * (componentHeight + spacing), componentWidth, componentHeight);
         panel.add(addButton);
 
-        // Back button
+        
         backButton = new FuturisticButton("Back");
         backButton.setBounds(startX + 250, startY + 6 * (componentHeight + spacing), componentWidth, componentHeight);
         panel.add(backButton);
 
-        // Add the panel to the frame
+        
         add(panel);
     }
 
@@ -146,27 +145,63 @@ public class AddMemberWindow extends JFrame {
                 JOptionPane.showMessageDialog(this,
                         "Member with ID " + id + " already exists",
                         "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+
             }
-            if (name.isEmpty() || id.isEmpty() || email.isEmpty() || membershipType.isEmpty() || phoneNumber.isEmpty() || status.isEmpty()) {
+           else if (name.isEmpty() || id.isEmpty() || email.isEmpty() || membershipType.isEmpty() || phoneNumber.isEmpty() || status.isEmpty()) {
                 JOptionPane.showMessageDialog(this,
                         "Please fill in all fields",
                         "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            memberDatabase.insertRecord(new Member(id, name, membershipType, email, phoneNumber, status));
-            JOptionPane.showMessageDialog(this,
-                    "Member with ID = " + id + " added successfully",
-                    "Success", JOptionPane.INFORMATION_MESSAGE);
-            memberDatabase.saveToFile();
 
-            // Clear the text fields
-            nameField.setText("");
-            idField.setText("");
-            emailField.setText("");
-            membershipTypeField.setText("");
-            phoneNumberField.setText("");
-            statusField.setText("");
+            }
+            else if (!Validations.isNameValid(name)) {
+                JOptionPane.showMessageDialog(this,
+                        "Invalid name, must not contain digits",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+
+            }
+            else if (!Validations.isValidMemberId(id)) {
+                JOptionPane.showMessageDialog(this,
+                        "Invalid member ID, must start with 'M' and be 4 characters long",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+
+            }
+            else if (!Validations.isEmailValid(email)) {
+                JOptionPane.showMessageDialog(this,
+                        "Invalid email, must contain '@' and '.'",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+
+            }
+            else if (!Validations.isPhoneValid(phoneNumber)) {
+                JOptionPane.showMessageDialog(this,
+                        "Invalid phone number, must be 10 digits long",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+
+            } else if (!Validations.isNameValid(membershipType)) {
+                JOptionPane.showMessageDialog(this,
+                        "Invalid membership type, must not contain digits",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+
+            } else if (!Validations.isNameValid(status)) {
+                JOptionPane.showMessageDialog(this,
+                        "Invalid status, must not contain digits",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+
+
+            } else {
+                memberDatabase.insertRecord(new Member(id, name, membershipType, email, phoneNumber, status));
+                JOptionPane.showMessageDialog(this,
+                        "Member with ID = " + id + " added successfully",
+                        "Success", JOptionPane.INFORMATION_MESSAGE);
+                memberDatabase.saveToFile();
+
+                
+                nameField.setText("");
+                idField.setText("");
+                emailField.setText("");
+                membershipTypeField.setText("");
+                phoneNumberField.setText("");
+                statusField.setText("");
+            }
         });
     }
 }

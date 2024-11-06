@@ -32,13 +32,13 @@ public class AddTrainerWindow extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Initialize components
+        
         initComponents();
         setUpButtons();
     }
 
     private void setUpButtons() {
-        // Add button action
+        
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -48,20 +48,38 @@ public class AddTrainerWindow extends JFrame {
                 String specialty = specialtyField.getText();
                 String phone = phoneField.getText();
 
-                // Check if any field is empty
+                
                 if (id.isEmpty() || name.isEmpty() || email.isEmpty() || specialty.isEmpty() || phone.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "All fields are required", "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
+                }
+                else if (!Validations.isTrainerIdValid(id)) {
+                    JOptionPane.showMessageDialog(null, "ID must start with 'T' and be 4 characters long", "Error", JOptionPane.ERROR_MESSAGE);
+
+                }
+                else if (!Validations.isNameValid(name)) {
+                    JOptionPane.showMessageDialog(null, "Invalid name", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                else if (!Validations.isEmailValid(email)) {
+                    JOptionPane.showMessageDialog(null, "Invalid email must contain @ and .", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                else if (!Validations.isValidSpecialty(specialty)) {
+                    JOptionPane.showMessageDialog(null, "Invalid specialty", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                else if (!Validations.isPhoneValid(phone)) {
+                    JOptionPane.showMessageDialog(null, "Invalid phone number must be 10 digits", "Error", JOptionPane.ERROR_MESSAGE);
+
+                }
+                    else {
                     if (trainerDatabase.contains(id)) {
                         JOptionPane.showMessageDialog(null, "Trainer with ID " + id + " already exists", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
 
                     trainerDatabase.insertRecord(new Trainer(id, name, email, specialty, phone));
-                    JOptionPane.showMessageDialog(null, "Trainer added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Trainer with ID = "+id+" added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                     trainerDatabase.saveToFile();
 
-                    // Clear fields
+                    
                     idField.setText("");
                     nameField.setText("");
                     emailField.setText("");
@@ -82,7 +100,7 @@ public class AddTrainerWindow extends JFrame {
     }
 
     private void initComponents() {
-        // Set up panel with background color
+        
         panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -91,13 +109,13 @@ public class AddTrainerWindow extends JFrame {
             }
         };
         panel.setLayout(null);
-        panel.setBackground(new Color(245, 245, 250)); // Light background color
+        panel.setBackground(new Color(245, 245, 250)); 
 
-        // Label font and color
+        
         Font labelFont = new Font("Arial", Font.BOLD, 14);
-        Color labelColor = new Color(245, 245, 248); // Dark blue color
+        Color labelColor = new Color(245, 245, 248); 
 
-        // Create and style labels and input fields
+        
         idLabel = new JLabel("ID:");
         styleLabel(idLabel, labelFont, labelColor, 50, 50, 100, 30);
         idField = new JFormattedTextField();
@@ -123,14 +141,14 @@ public class AddTrainerWindow extends JFrame {
         phoneField = new JTextField();
         styleTextField(phoneField, 150, 250, 200, 30);
 
-        // Style and position buttons
+        
         addButton = new FuturisticButton("Add");
-        styleButton(addButton, 150, 300, 100, 30, new Color(60, 179, 113)); // Green color
+        styleButton(addButton, 150, 300, 100, 30, new Color(60, 179, 113)); 
 
         backButton = new FuturisticButton("Back");
-        styleButton(backButton, 260, 300, 100, 30, new Color(255, 69, 0)); // Red-orange color
+        styleButton(backButton, 260, 300, 100, 30, new Color(255, 69, 0)); 
 
-        // Add components to the panel
+        
         panel.add(idLabel);
         panel.add(idField);
         panel.add(nameLabel);
@@ -144,7 +162,7 @@ public class AddTrainerWindow extends JFrame {
         panel.add(addButton);
         panel.add(backButton);
 
-        // Add panel to frame
+        
         add(panel);
         setVisible(true);
     }

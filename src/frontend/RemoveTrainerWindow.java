@@ -20,7 +20,7 @@ public class RemoveTrainerWindow extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Initialize components
+        
         initComponents();
         setUpButtons();
         setVisible(true);
@@ -37,7 +37,7 @@ public class RemoveTrainerWindow extends JFrame {
                 trainerDatabase.deleteRecord(trainerId);
                 trainerDatabase.saveToFile();
                 JOptionPane.showMessageDialog(this, "Trainer removed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                trainerIdField.setText(""); // Clear the field after successful removal
+                trainerIdField.setText(""); 
             } else {
                 JOptionPane.showMessageDialog(this, "Trainer with ID = " + trainerId + " not found.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -50,7 +50,7 @@ public class RemoveTrainerWindow extends JFrame {
     }
 
     private void initComponents() {
-        // Set up panel with background color
+        
         JPanel panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -59,36 +59,36 @@ public class RemoveTrainerWindow extends JFrame {
             }
         };
         panel.setLayout(null);
-        panel.setBackground(new Color(240, 248, 255)); // Light blue background
+        panel.setBackground(new Color(240, 248, 255)); 
 
-        // Label styling
+        
         Font labelFont = new Font("Arial", Font.BOLD, 14);
-        Color labelColor = new Color(226, 173, 37); // Steel blue color
+        Color labelColor = new Color(226, 173, 37); 
 
         trainerIdLabel = new JLabel("Trainer ID:");
         trainerIdLabel.setFont(labelFont);
         trainerIdLabel.setForeground(labelColor);
         trainerIdLabel.setBounds(50, 100, 100, 30);
 
-        // Trainer ID text field styling
+        
         trainerIdField = new JTextField(20);
         trainerIdField.setBounds(130, 100, 200, 30);
 
 
-        // Remove and Back button styling
+        
         removeButton = new FuturisticButton("Remove");
         styleButton(removeButton, 130, 160, 120, 35);
 
         backButton = new FuturisticButton("Back");
         styleButton(backButton, 260, 160, 120, 35);
 
-        // Add components to the panel
+        
         panel.add(trainerIdLabel);
         panel.add(trainerIdField);
         panel.add(removeButton);
         panel.add(backButton);
 
-        // Add panel to frame
+        
         add(panel);
     }
 
