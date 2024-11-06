@@ -87,12 +87,12 @@ public class RegisterMemberWindow extends JFrame {
 
         // Registration Date Label and Field
         JLabel registrationDateLabel = new JLabel("Registration Date:");
-        registrationDateLabel.setForeground(labelColor);// Adjust color for visibility
+        registrationDateLabel.setForeground(labelColor); // Adjust color for visibility
         registrationDateLabel.setFont(labelFont);
         today = LocalDate.now();
         String formattedDate = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         registrationDateField = new JTextField(formattedDate);
-        registrationDateField.setEditable(false); // Make the date field non-editable
+        registrationDateField.setEditable(true); // Allow user to edit the date
 
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -135,7 +135,9 @@ public class RegisterMemberWindow extends JFrame {
             } else if (classDatabase.getRecord(classId).getAvailableSeats() == 0) {
                 JOptionPane.showMessageDialog(this, "No Available Seats!", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                memberClassRegistrationDatabase.insertRecord(new MemberClassRegistration(memberId, classId, today, "Active"));
+                // Parse and use the entered registration date
+                LocalDate date = LocalDate.parse(registrationDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                memberClassRegistrationDatabase.insertRecord(new MemberClassRegistration(memberId, classId, date, "Active"));
                 JOptionPane.showMessageDialog(this, "Member with ID = " + memberId + " registered for class with ID = " + classId + " successfully.");
                 memberClassRegistrationDatabase.saveToFile();
             }
