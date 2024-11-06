@@ -8,14 +8,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ViewTrainersWindow extends JFrame {
     private TrainerDatabase trainerDatabase;
-    JButton backButton;
+    private final ImageIcon backgroundImage = new ImageIcon("src/frontend/Role.jpg");
 
     public ViewTrainersWindow(TrainerDatabase trainerDatabase) {
-
         this.trainerDatabase = trainerDatabase;
         setTitle("View Trainers");
         setSize(1300, 700);
@@ -28,48 +26,84 @@ public class ViewTrainersWindow extends JFrame {
     }
 
     private void initComponents() {
-        backButton = new JButton("Back");
-        backButton.addActionListener(e -> {
-            new AdminRoleWindow();
-            dispose();
-        });
-        backButton.setBounds(600, 600, 100, 50);
-        this.add(backButton);
-        // Column headers
+        // Main panel with background image
+        JPanel mainPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        mainPanel.setLayout(new BorderLayout());
+
+        // Column names for the table
         String[] columnNames = {"ID", "Name", "Email", "Specialty", "Phone Number"};
 
-        // Get data from TrainerDatabase (assume it returns a list of trainers)
-        ArrayList<Trainer> trainersData = trainerDatabase.returnAllRecords(); // Adjust this method based on your backend
+        // Table model
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Make all cells non-editable
+            }
+        };
 
-        // Populate table data
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+        // Populate table model with trainer data
+        ArrayList<Trainer> trainersData = trainerDatabase.returnAllRecords();
         for (Trainer trainer : trainersData) {
             tableModel.addRow(trainer.lineRepresentation().split(","));
         }
 
-        // Create JTable with the model and set it to be transparent
-        JTable table = new JTable(tableModel);
-        table.setOpaque(true);
-        table.setBackground(new Color(35, 64, 190, 134));
-        ((DefaultTableCellRenderer) table.getDefaultRenderer(Object.class)).setOpaque(true);
+        // Create and style the table with transparency and white font color
+        JTable trainerTable = new JTable(tableModel);
+        trainerTable.setOpaque(false);
+        trainerTable.setBackground(new Color(255, 255, 255, 0)); // Fully transparent background
+        trainerTable.setFont(new Font("Arial", Font.PLAIN, 14));
+        trainerTable.setRowHeight(30);
+        trainerTable.setGridColor(new Color(200, 200, 200, 100)); // Slightly transparent grid
 
-        // Set table size
-        table.setPreferredScrollableViewportSize(new Dimension(1000, 500));
-        table.setFillsViewportHeight(true);
+        // Header styling with transparency
+        trainerTable.getTableHeader().setOpaque(false);
+        trainerTable.getTableHeader().setBackground(new Color(60, 120, 180, 150)); // Semi-transparent blue
+        trainerTable.getTableHeader().setForeground(Color.WHITE);
+        trainerTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
 
-        // Create a JScrollPane to enable row scrolling
-        JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setOpaque(true);
-        scrollPane.getViewport().setOpaque(true);
+        // Center-align text in cells and set font color to white
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        centerRenderer.setOpaque(false); // Make cell renderer transparent
+        centerRenderer.setForeground(Color.WHITE); // Set text color to white
+        for (int i = 0; i < trainerTable.getColumnCount(); i++) {
+            trainerTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
 
-        // Center the table within the frame
-        JPanel tablePanel = new JPanel();
-        tablePanel.setLayout(new GridBagLayout());
-        tablePanel.add(scrollPane);
+        // Transparent scroll pane
+        JScrollPane scrollPane = new JScrollPane(trainerTable);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Add the panel to the frame
-        add(tablePanel, BorderLayout.CENTER);
-        setVisible(true);
+        // Back button styling
+        FuturisticButton backButton = new FuturisticButton("Back");
+        backButton.setPreferredSize(new Dimension(150, 50));
+        backButton.setFont(new Font("Arial", Font.BOLD, 16));
+        backButton.setBackground(new Color(60, 120, 180, 200)); // Semi-transparent blue
+        backButton.setForeground(Color.WHITE);
+        backButton.setFocusPainted(false);
+        backButton.setBorder(BorderFactory.createEmptyBorder());
+
+        // Back button panel
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false); // Transparent to show background
+        buttonPanel.add(backButton);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Add main panel to frame
+        add(mainPanel);
+
+        // Back button action
+        backButton.addActionListener(e -> {
+            new AdminRoleWindow();
+            dispose();
+        });
     }
-
 }

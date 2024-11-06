@@ -3,29 +3,30 @@ package frontend;
 import backend.ClassDatabase;
 import backend.MemberClassRegistrationDatabase;
 import backend.MemberDatabase;
-import backend.TrainerDatabase;
 import constants.fileNames;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class TrainerRoleWindow extends JFrame implements fileNames {
     private MemberDatabase memberDatabase;
     private ClassDatabase classDatabase;
     private MemberClassRegistrationDatabase registrationDatabase;
+    private final ImageIcon backgroundImage = new ImageIcon("src/frontend/Trainer.jpg");
 
-    private JButton addMemberButton;
-    private JButton viewMembersButton;
-    private JButton addClassButton;
-    private JButton viewClassesButton;
-    private JButton registerMemberButton;
-    private JButton cancelRegistrationButton;
-    private JButton viewRegistrationsButton;
-    private JButton logoutButton;
+    private FuturisticButton addMemberButton;
+    private FuturisticButton viewMembersButton;
+    private FuturisticButton addClassButton;
+    private FuturisticButton viewClassesButton;
+    private FuturisticButton registerMemberButton;
+    private FuturisticButton cancelRegistrationButton;
+    private FuturisticButton viewRegistrationsButton;
+    private FuturisticButton logoutButton;
 
     public TrainerRoleWindow() {
         // Set up the window
         setTitle("Trainer Role");
-        setSize(1300, 700);
+        setSize(1280, 853);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -41,31 +42,26 @@ public class TrainerRoleWindow extends JFrame implements fileNames {
 
     private void setUpButtons() {
         addMemberButton.addActionListener(e -> {
-            // Add functionality for adding a member
             new AddMemberWindow(memberDatabase);
             dispose();
         });
         viewMembersButton.addActionListener(e -> {
-            // Add functionality for viewing members
             new ViewMembersWindow(memberDatabase);
             dispose();
         });
         addClassButton.addActionListener(e -> {
-            // Add functionality for adding a class
             new AddClassWindow(classDatabase);
             dispose();
         });
         viewClassesButton.addActionListener(e -> {
-            // Add functionality for viewing classes
             new ViewClassesWindow(classDatabase);
-            dispose();});
+            dispose();
+        });
         registerMemberButton.addActionListener(e -> {
-            // Add functionality for registering a member for a class
             new RegisterMemberWindow(memberDatabase, classDatabase, registrationDatabase);
             dispose();
         });
         cancelRegistrationButton.addActionListener(e -> {
-            // Add functionality for cancelling a registration
             new CancelRegistrationWindow(registrationDatabase, memberDatabase, classDatabase);
             dispose();
         });
@@ -82,28 +78,33 @@ public class TrainerRoleWindow extends JFrame implements fileNames {
         });
     }
 
-
     private void initComponents() {
-        // Create buttons for trainer actions with specified labels and sizes
-        addMemberButton = new JButton("Add Member");
-        viewMembersButton = new JButton("View Members");
-        addClassButton = new JButton("Add Class");
-        viewClassesButton = new JButton("View Classes");
-        registerMemberButton = new JButton("Register Member for Class");
-        cancelRegistrationButton = new JButton("Cancel Registration");
-        viewRegistrationsButton = new JButton("View Registrations");
-        logoutButton = new JButton("Logout");
-
-        // Panel for buttons layout
-        JPanel panel = new JPanel();
+        // Main panel with background image
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
         panel.setLayout(null);
 
-        // Positioning buttons on the middle-left of the frame
-        int startX = 100; // x-position for buttons
-        int startY = 100; // Starting y-position
+        // Initialize buttons for trainer actions
+        addMemberButton = new FuturisticButton("Add Member");
+        viewMembersButton = new FuturisticButton("View Members");
+        addClassButton = new FuturisticButton("Add Class");
+        viewClassesButton = new FuturisticButton("View Classes");
+        registerMemberButton = new FuturisticButton("Add Member to Class");
+        cancelRegistrationButton = new FuturisticButton("Cancel Registration");
+        viewRegistrationsButton = new FuturisticButton("View Registrations");
+        logoutButton = new FuturisticButton("Logout");
+
+        // Position buttons with absolute positioning
+        int startX = 100;
+        int startY = 100;
         int buttonWidth = 200;
         int buttonHeight = 50;
-        int spacing = 20; // Space between each button
+        int spacing = 20;
 
         addMemberButton.setBounds(startX, startY, buttonWidth, buttonHeight);
         viewMembersButton.setBounds(startX, startY + (buttonHeight + spacing), buttonWidth, buttonHeight);
@@ -126,7 +127,5 @@ public class TrainerRoleWindow extends JFrame implements fileNames {
 
         // Add panel to frame
         add(panel);
-
     }
-
 }

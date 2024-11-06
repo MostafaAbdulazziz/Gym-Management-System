@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class RegisterMemberWindow extends JFrame {
+    private final ImageIcon backgroundImage = new ImageIcon("src/frontend/dumbles.jpg");
     private ClassDatabase classDatabase;
     private MemberDatabase memberDatabase;
     private MemberClassRegistrationDatabase memberClassRegistrationDatabase;
@@ -19,9 +20,9 @@ public class RegisterMemberWindow extends JFrame {
     private JTextField memberIdField;
     private JTextField classIdField;
     private JTextField registrationDateField;
-    private JButton registerButton;
-    private JButton backButton;
-    LocalDate today;
+    private FuturisticButton registerButton;
+    private FuturisticButton backButton;
+    private LocalDate today;
 
     public RegisterMemberWindow(MemberDatabase memberDatabase, ClassDatabase classDatabase, MemberClassRegistrationDatabase memberClassRegistrationDatabase) {
         this.classDatabase = classDatabase;
@@ -30,7 +31,7 @@ public class RegisterMemberWindow extends JFrame {
 
         // Set up the window
         setTitle("Register Member");
-        setSize(1300, 700);
+        setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -42,83 +43,100 @@ public class RegisterMemberWindow extends JFrame {
     }
 
     private void initComponents() {
-        // Create a panel for layout
-        JPanel panel = new JPanel();
-        panel.setLayout(null); // Using absolute positioning for custom layout
-
-        // Set starting x, y position and size variables
-        int startX = 50;
-        int textFieldX = 200;
-        int startY = 150;
-        int componentWidth = 200;
-        int componentHeight = 30;
-        int spacing = 20;
+        // Create a panel with padding and GridBagLayout for consistent alignment
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        panel.setLayout(new GridBagLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Padding around the panel
+        Font labelFont = new Font("Arial", Font.BOLD, 14);
+        Color labelColor = new Color(234, 234, 243);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10); // Spacing between components
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Member ID Label and Field
         JLabel memberIdLabel = new JLabel("Member ID:");
-        memberIdLabel.setBounds(startX, startY, 100, componentHeight);
-        panel.add(memberIdLabel);
+        memberIdLabel.setForeground(Color.WHITE);
+        memberIdLabel.setFont(labelFont);
+        memberIdField = new JTextField(20);
 
-        memberIdField = new JTextField();
-        memberIdField.setBounds(textFieldX, startY, componentWidth, componentHeight);
-        panel.add(memberIdField);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(memberIdLabel, gbc);
+
+        gbc.gridx = 1;
+        panel.add(memberIdField, gbc);
 
         // Class ID Label and Field
         JLabel classIdLabel = new JLabel("Class ID:");
-        classIdLabel.setBounds(startX, startY + componentHeight + spacing, 100, componentHeight);
-        panel.add(classIdLabel);
+        classIdLabel.setForeground(Color.WHITE);
+        classIdLabel.setFont(labelFont);
+        classIdField = new JTextField(20);
 
-        classIdField = new JTextField();
-        classIdField.setBounds(textFieldX, startY + componentHeight + spacing, componentWidth, componentHeight);
-        panel.add(classIdField);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(classIdLabel, gbc);
+
+        gbc.gridx = 1;
+        panel.add(classIdField, gbc);
 
         // Registration Date Label and Field
         JLabel registrationDateLabel = new JLabel("Registration Date:");
-        registrationDateLabel.setBounds(startX, startY + 2 * (componentHeight + spacing), 150, componentHeight);
-        panel.add(registrationDateLabel);
-
-        // Display current date in the format YYYY-MM-DD
-         today = LocalDate.now();
+        registrationDateLabel.setForeground(labelColor);// Adjust color for visibility
+        registrationDateLabel.setFont(labelFont);
+        today = LocalDate.now();
         String formattedDate = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
         registrationDateField = new JTextField(formattedDate);
-        registrationDateField.setBounds(textFieldX, startY + 2 * (componentHeight + spacing), componentWidth, componentHeight);
         registrationDateField.setEditable(false); // Make the date field non-editable
-        panel.add(registrationDateField);
 
-        // Register Button
-        registerButton = new JButton("Register");
-        registerButton.setBounds(textFieldX, startY + 3 * (componentHeight + spacing), 150, 40);
-        panel.add(registerButton);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(registrationDateLabel, gbc);
 
-        // Back Button
-        backButton = new JButton("Back");
-        backButton.setBounds(startX, startY + 3 * (componentHeight + spacing), 150, 40);
-        panel.add(backButton);
+        gbc.gridx = 1;
+        panel.add(registrationDateField, gbc);
+
+        // Register and Back Buttons with equal size
+        registerButton = new FuturisticButton("Register");
+        backButton = new FuturisticButton("Back");
+
+        Dimension buttonSize = new Dimension(150, 40);
+        registerButton.setPreferredSize(buttonSize);
+        backButton.setPreferredSize(buttonSize);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panel.add(registerButton, gbc);
+
+        gbc.gridx = 1;
+        panel.add(backButton, gbc);
 
         // Add the panel to the frame
         add(panel);
     }
 
     private void setUpButtons() {
-        // Add functionality to register and back buttons if needed
         registerButton.addActionListener(e -> {
-            // Code to register member for class
             String memberId = memberIdField.getText();
             String classId = classIdField.getText();
             String registrationDate = registrationDateField.getText();
-            if(memberClassRegistrationDatabase.contains(memberId+"-"+classId)) {
+
+            if (memberClassRegistrationDatabase.contains(memberId + "-" + classId)) {
                 JOptionPane.showMessageDialog(this, "Member is already registered for this class.", "Error", JOptionPane.ERROR_MESSAGE);
-            } else if(!memberDatabase.contains(memberId)) {
+            } else if (!memberDatabase.contains(memberId)) {
                 JOptionPane.showMessageDialog(this, "Member ID does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
-            } else if(!classDatabase.contains(classId)) {
+            } else if (!classDatabase.contains(classId)) {
                 JOptionPane.showMessageDialog(this, "Class ID does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
             } else if (classDatabase.getRecord(classId).getAvailableSeats() == 0) {
                 JOptionPane.showMessageDialog(this, "No Available Seats!", "Error", JOptionPane.ERROR_MESSAGE);
-
             } else {
-                memberClassRegistrationDatabase.insertRecord(new MemberClassRegistration(memberId, classId, today,"Active"));
-                JOptionPane.showMessageDialog(this, "Member with ID = "+memberId+" registered for class with ID = "+classId+" successfully.");
+                memberClassRegistrationDatabase.insertRecord(new MemberClassRegistration(memberId, classId, today, "Active"));
+                JOptionPane.showMessageDialog(this, "Member with ID = " + memberId + " registered for class with ID = " + classId + " successfully.");
                 memberClassRegistrationDatabase.saveToFile();
             }
         });

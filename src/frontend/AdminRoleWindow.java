@@ -7,15 +7,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AdminRoleWindow extends JFrame implements fileNames {
+    private final ImageIcon backgroundImage = new ImageIcon("src/frontend/Role.jpg");
 
-
-    JButton addTrainerButton;
-    JButton viewTrainersButton;
-    JButton removeTrainerButton;
-    JButton logoutButton;
-    JButton backButton;
+    FuturisticButton addTrainerButton;
+    FuturisticButton viewTrainersButton;
+    FuturisticButton removeTrainerButton;
+    FuturisticButton logoutButton;
+    FuturisticButton backButton;
     TrainerDatabase trainerDatabase;
-
 
     public AdminRoleWindow() {
         // Set up the window
@@ -55,34 +54,36 @@ public class AdminRoleWindow extends JFrame implements fileNames {
 
     private void initComponents() {
         trainerDatabase = new TrainerDatabase(this.TRAINER_FILENAME);
-        // Create buttons for admin actions with specified size
-        addTrainerButton = new JButton("Add Trainer");
-        viewTrainersButton = new JButton("View Trainers");
-        removeTrainerButton = new JButton("Remove Trainer");
-        logoutButton = new JButton("Logout");
-        backButton = new JButton("Back");
 
-        // Set size for each button
-        addTrainerButton.setSize(200, 75);
-        viewTrainersButton.setSize(200, 75);
-        removeTrainerButton.setSize(200, 75);
-        logoutButton.setSize(200, 75);
-
-        // Panel to hold buttons with absolute positioning
-        JPanel panel = new JPanel();
+        // Create a main panel with a background image
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
         panel.setLayout(null);
 
-        // Position buttons on the middle left side of the panel
-        int startX = 50; // x-position (left side)
-        int startY = 150; // y-position to start placing buttons in the middle
-        int buttonSpacing = 20; // Space between buttons
+        // Initialize buttons for admin actions
+        addTrainerButton = new FuturisticButton("Add Trainer");
+        viewTrainersButton = new FuturisticButton("View Trainers");
+        removeTrainerButton = new FuturisticButton("Remove Trainer");
+        logoutButton = new FuturisticButton("Logout");
+        backButton = new FuturisticButton("Back");
 
-        // Set bounds for each button
-        addTrainerButton.setBounds(startX, startY, 200, 75);
-        viewTrainersButton.setBounds(startX, startY + 75 + buttonSpacing, 200, 75);
-        removeTrainerButton.setBounds(startX, startY + 2 * (75 + buttonSpacing), 200, 75);
-        logoutButton.setBounds(startX, startY + 3 * (75 + buttonSpacing), 200, 75);
-        backButton.setBounds(startX, startY + 4 * (75 + buttonSpacing), 200, 75);
+        // Position buttons on the panel with specified bounds
+        int startX = 50;
+        int startY = 150;
+        int buttonSpacing = 20;
+        int buttonWidth = 200;
+        int buttonHeight = 30;
+
+        addTrainerButton.setBounds(startX, startY, buttonWidth, buttonHeight);
+        viewTrainersButton.setBounds(startX, startY + buttonHeight + buttonSpacing, buttonWidth, buttonHeight);
+        removeTrainerButton.setBounds(startX, startY + 2 * (buttonHeight + buttonSpacing), buttonWidth, buttonHeight);
+        logoutButton.setBounds(startX, startY + 3 * (buttonHeight + buttonSpacing), buttonWidth, buttonHeight);
+        backButton.setBounds(startX, startY + 4 * (buttonHeight + buttonSpacing), buttonWidth, buttonHeight);
 
         // Add buttons to the panel
         panel.add(addTrainerButton);

@@ -4,6 +4,7 @@ import backend.Trainer;
 import backend.TrainerDatabase;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,19 +16,19 @@ public class AddTrainerWindow extends JFrame {
     JTextField nameField;
     JLabel emailLabel;
     JTextField emailField;
-    JButton addButton;
+    FuturisticButton addButton;
     JPanel panel;
     JTextField specialtyField;
     JLabel specialtyLabel;
     JLabel phoneLabel;
     JTextField phoneField;
-    JButton backButton;
-
+    FuturisticButton backButton;
+    private final ImageIcon backgroundImage = new ImageIcon("src/frontend/dumbles.jpg");
 
     public AddTrainerWindow(TrainerDatabase trainerDatabase) {
         this.trainerDatabase = trainerDatabase;
         setTitle("Add Trainer");
-        setSize(1300, 700);
+        setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -50,7 +51,6 @@ public class AddTrainerWindow extends JFrame {
                 // Check if any field is empty
                 if (id.isEmpty() || name.isEmpty() || email.isEmpty() || specialty.isEmpty() || phone.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "All fields are required", "Error", JOptionPane.ERROR_MESSAGE);
-
                 } else {
                     if (trainerDatabase.contains(id)) {
                         JOptionPane.showMessageDialog(null, "Trainer with ID " + id + " already exists", "Error", JOptionPane.ERROR_MESSAGE);
@@ -70,6 +70,7 @@ public class AddTrainerWindow extends JFrame {
                 }
             }
         });
+
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -81,57 +82,54 @@ public class AddTrainerWindow extends JFrame {
     }
 
     private void initComponents() {
-        // Create input fields and labels
+        // Set up panel with background color
+        panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        panel.setLayout(null);
+        panel.setBackground(new Color(245, 245, 250)); // Light background color
+
+        // Label font and color
+        Font labelFont = new Font("Arial", Font.BOLD, 14);
+        Color labelColor = new Color(245, 245, 248); // Dark blue color
+
+        // Create and style labels and input fields
         idLabel = new JLabel("ID:");
+        styleLabel(idLabel, labelFont, labelColor, 50, 50, 100, 30);
         idField = new JFormattedTextField();
-        idField.setColumns(20);
+        styleTextField(idField, 150, 50, 200, 30);
 
         nameLabel = new JLabel("Name:");
-        nameField = new JTextField(20);
+        styleLabel(nameLabel, labelFont, labelColor, 50, 100, 100, 30);
+        nameField = new JTextField();
+        styleTextField(nameField, 150, 100, 200, 30);
 
         emailLabel = new JLabel("Email:");
-        emailField = new JTextField(20);
+        styleLabel(emailLabel, labelFont, labelColor, 50, 150, 100, 30);
+        emailField = new JTextField();
+        styleTextField(emailField, 150, 150, 200, 30);
 
         specialtyLabel = new JLabel("Specialty:");
-        specialtyField = new JTextField(20);
+        styleLabel(specialtyLabel, labelFont, labelColor, 50, 200, 100, 30);
+        specialtyField = new JTextField();
+        styleTextField(specialtyField, 150, 200, 200, 30);
 
         phoneLabel = new JLabel("Phone Number:");
-        phoneField = new JTextField(20);
+        styleLabel(phoneLabel, labelFont, labelColor, 40, 250, 150, 30);
+        phoneField = new JTextField();
+        styleTextField(phoneField, 150, 250, 200, 30);
 
-        // Add button
-        addButton = new JButton("Add");
-        backButton = new JButton("Back");
+        // Style and position buttons
+        addButton = new FuturisticButton("Add");
+        styleButton(addButton, 150, 300, 100, 30, new Color(60, 179, 113)); // Green color
 
-        // Panel to hold components
-        panel = new JPanel();
-        panel.setLayout(null);
+        backButton = new FuturisticButton("Back");
+        styleButton(backButton, 260, 300, 100, 30, new Color(255, 69, 0)); // Red-orange color
 
-        // Position components on the middle-left side
-        int startX = 50; // x-position for labels
-        int fieldX = 150; // x-position for text fields
-        int startY = 150; // Starting y-position for the first label
-        int componentHeight = 30; // Height of each label and text field
-        int spacing = 20; // Space between each row
-
-        // Set bounds for labels and fields
-        idLabel.setBounds(startX, startY, 100, componentHeight);
-        idField.setBounds(fieldX, startY, 200, componentHeight);
-
-        nameLabel.setBounds(startX, startY + componentHeight + spacing, 100, componentHeight);
-        nameField.setBounds(fieldX, startY + componentHeight + spacing, 200, componentHeight);
-
-        emailLabel.setBounds(startX, startY + 2 * (componentHeight + spacing), 100, componentHeight);
-        emailField.setBounds(fieldX, startY + 2 * (componentHeight + spacing), 200, componentHeight);
-
-        specialtyLabel.setBounds(startX, startY + 3 * (componentHeight + spacing), 100, componentHeight);
-        specialtyField.setBounds(fieldX, startY + 3 * (componentHeight + spacing), 200, componentHeight);
-
-        phoneLabel.setBounds(startX, startY + 4 * (componentHeight + spacing), 100, componentHeight);
-        phoneField.setBounds(fieldX, startY + 4 * (componentHeight + spacing), 200, componentHeight);
-
-        // Set bounds for the add button and position it below the fields
-        addButton.setBounds(startX+200, startY + 5 * (componentHeight + spacing), 100, componentHeight);
-        backButton.setBounds(startX+100, startY + 5 * (componentHeight + spacing), 100, componentHeight);
         // Add components to the panel
         panel.add(idLabel);
         panel.add(idField);
@@ -149,5 +147,24 @@ public class AddTrainerWindow extends JFrame {
         // Add panel to frame
         add(panel);
         setVisible(true);
+    }
+
+    private void styleLabel(JLabel label, Font font, Color color, int x, int y, int width, int height) {
+        label.setFont(font);
+        label.setForeground(color);
+        label.setBounds(x, y, width, height);
+    }
+
+    private void styleTextField(JTextField textField, int x, int y, int width, int height) {
+        textField.setBounds(x, y, width, height);
+        textField.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
+    }
+
+    private void styleButton(FuturisticButton button, int x, int y, int width, int height, Color color) {
+        button.setBounds(x, y, width, height);
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setFont(new Font("Arial", Font.BOLD, 12));
     }
 }

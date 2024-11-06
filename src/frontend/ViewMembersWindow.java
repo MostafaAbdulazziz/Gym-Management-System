@@ -4,17 +4,18 @@ import backend.Member;
 import backend.MemberDatabase;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class ViewMembersWindow extends JFrame {
     private MemberDatabase memberDatabase;
-    private JTable memberTable; // Table to display member data
-    private JButton backButton; // Button to go back
+    private JTable memberTable;
+    private FuturisticButton backButton;
+    private final ImageIcon backgroundImage = new ImageIcon("src/frontend/Role.jpg");
 
     public ViewMembersWindow(MemberDatabase memberDatabase) {
-        // Set up the window
         this.memberDatabase = memberDatabase;
         setTitle("View Members");
         setSize(1300, 700);
@@ -23,19 +24,24 @@ public class ViewMembersWindow extends JFrame {
 
         // Initialize components
         initComponents();
-
         setVisible(true);
     }
 
     private void initComponents() {
-        // Create a panel for the table and buttons
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+        // Main panel with background image
+        JPanel mainPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        mainPanel.setLayout(new BorderLayout());
 
-        // Create column names
+        // Table column names
         String[] columnNames = {"ID", "Name", "Membership Type", "Email", "Phone Number", "Status"};
 
-        // Create a table model and override the isCellEditable method
+        // Table model
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -43,39 +49,63 @@ public class ViewMembersWindow extends JFrame {
             }
         };
 
-        // Populate the table model with member data
+        // Populate table model with member data
         ArrayList<Member> members = memberDatabase.returnAllRecords();
         for (Member member : members) {
             tableModel.addRow(member.lineRepresentation().split(","));
         }
 
-        // Create the table with the model and set the preferred size
+        // Create and style the table with transparency and white font color
         memberTable = new JTable(tableModel);
-        memberTable.setPreferredScrollableViewportSize(new Dimension(1000, 600));
-        memberTable.setFillsViewportHeight(true);
+        memberTable.setOpaque(false);
+        memberTable.setBackground(new Color(255, 255, 255, 0)); // Fully transparent background
+        memberTable.setFont(new Font("Arial", Font.PLAIN, 14));
+        memberTable.setRowHeight(30);
+        memberTable.setGridColor(new Color(200, 200, 200, 100)); // Slightly transparent grid
 
-        // Add the table to a scroll pane for scrolling
+        // Header styling with transparency
+        memberTable.getTableHeader().setOpaque(false);
+        memberTable.getTableHeader().setBackground(new Color(70, 130, 180, 150)); // Semi-transparent blue
+        memberTable.getTableHeader().setForeground(Color.WHITE);
+        memberTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+
+        // Center-align text in cells and set font color to white
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        centerRenderer.setOpaque(false); // Make cell renderer transparent
+        centerRenderer.setForeground(Color.WHITE); // Set text color to white
+        for (int i = 0; i < memberTable.getColumnCount(); i++) {
+            memberTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        // Transparent scroll pane
         JScrollPane scrollPane = new JScrollPane(memberTable);
-        panel.add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Create the back button
-        backButton = new JButton("Back");
-        backButton.setPreferredSize(new Dimension(150, 50)); // Set button size
+        // Back button styling
+        backButton = new FuturisticButton("Back");
+        backButton.setPreferredSize(new Dimension(150, 50));
+        backButton.setFont(new Font("Arial", Font.BOLD, 16));
+        backButton.setBackground(new Color(70, 130, 180, 200)); // Semi-transparent blue
+        backButton.setForeground(Color.WHITE);
+        backButton.setFocusPainted(false);
+        backButton.setBorder(BorderFactory.createEmptyBorder());
 
-        // Create a panel for the button
+        // Button panel
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false); // Transparent to show background
         buttonPanel.add(backButton);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Add the button panel to the bottom of the main panel
-        panel.add(buttonPanel, BorderLayout.SOUTH);
+        // Add main panel to frame
+        add(mainPanel);
 
-        // Add the main panel to the frame
-        add(panel);
-
-        // Set up action for back button
+        // Back button action
         backButton.addActionListener(e -> {
-           new TrainerRoleWindow();
-            dispose(); // Close the current window
+            new TrainerRoleWindow();
+            dispose();
         });
     }
 }
