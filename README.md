@@ -213,16 +213,6 @@ Gym-Management-System/
      (empty)
      ```
 
-4. **Add the Screenshots**:
-   - Ensure the `resources/images/` directory contains the screenshots with the following filenames:
-     - `welcome_screen.png`
-     - `admin_login_page.png`
-     - `trainer_login_page.png`
-     - `admin_role_menu.png`
-     - `add_trainer_page.png`
-     - `view_trainers_page.png`
-     - `trainer_role_menu.png`
-     - `add_class_page.png`
 
 ## Running the Application
 
