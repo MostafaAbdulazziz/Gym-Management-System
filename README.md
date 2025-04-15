@@ -31,11 +31,11 @@ The Gym Management System is a desktop application developed as part of the CC27
 *The page displaying a list of all trainers in the system.*
 
 ### Trainer Role Menu
-![Trainer Role Menu](src/resoucres/admin.png)  
+![Trainer Role Menu](src/resoucres/tr.png)  
 *The main menu for trainers, offering options to manage members, classes, and registrations.*
 
 ### Add Class Page
-![Add Class Page](src/resoucres/addc.png)  
+![Add Class Page](src/resoucres/addcc.png)  
 *The page for trainers to add a new class with details like ID, name, trainer, duration, and max participants.*
 
 ## Table of Contents
