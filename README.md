@@ -7,7 +7,7 @@ The Gym Management System is a desktop application developed as part of the CC27
 ## Screenshots
 
 ### Gym Management System Welcome Screen
-![Welcome Screen](src/resoucres/Screenshot 2025-04-15 195954.png)  
+![Welcome Screen](src/resoucres/main.png)  
 *The initial screen allowing users to choose between Admin and Trainer roles.*
 
 ### Admin Login Page
