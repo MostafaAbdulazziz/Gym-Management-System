@@ -11,31 +11,31 @@ The Gym Management System is a desktop application developed as part of the CC27
 *The initial screen allowing users to choose between Admin and Trainer roles.*
 
 ### Admin Login Page
-![Admin Login Page](images/admin_login_page.png)  
+![Admin Login Page](src/resoucres/al.png)  
 *The login page for administrators to access the system.*
 
 ### Trainer Login Page
-![Trainer Login Page](images/trainer_login_page.png)  
+![Trainer Login Page](src/resoucres/tl.png)  
 *The login page for trainers to access their role-specific features.*
 
 ### Admin Role Menu
-![Admin Role Menu](images/admin_role_menu.png)  
+![Admin Role Menu](src/resoucres/adminRole.png)  
 *The main menu for admins, providing options to add, view, remove trainers, and logout.*
 
 ### Add Trainer Page
-![Add Trainer Page](images/add_trainer_page.png)  
+![Add Trainer Page](src/resoucres/addT.png)  
 *The page for admins to add a new trainer with details like ID, name, email, specialty, and phone number.*
 
 ### View Trainers Page
-![View Trainers Page](images/view_trainers_page.png)  
+![View Trainers Page](src/resoucres/viewT.png)  
 *The page displaying a list of all trainers in the system.*
 
 ### Trainer Role Menu
-![Trainer Role Menu](images/trainer_role_menu.png)  
+![Trainer Role Menu](src/resoucres/admin.png)  
 *The main menu for trainers, offering options to manage members, classes, and registrations.*
 
 ### Add Class Page
-![Add Class Page](images/add_class_page.png)  
+![Add Class Page](src/resoucres/addc.png)  
 *The page for trainers to add a new class with details like ID, name, trainer, duration, and max participants.*
 
 ## Table of Contents
